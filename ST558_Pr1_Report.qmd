@@ -1,0 +1,27 @@
+---
+title: "Modifying & Processing Census Data"
+author: "Charles Lane & Paige O'Connell"
+format: html
+editor: visual
+---
+
+## Data Processing
+
+Where does our data come from and what does it describe?
+
+## Write a Generic Function for Summarizing
+
+
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+## Put it Together
