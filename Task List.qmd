@@ -1,0 +1,17 @@
+---
+title: "Project 1 Task List"
+format: html
+editor: visual
+---
+
+## Project 1 Task List:
+
+-   [x] Create R Project & github repo - **Charles**
+-   [ ] Read-in the EDU01 dataset and manipulate the data as described in the project descriptions of items 1 to 6.
+-   [ ] Repeat the process from above with the 2nd component of the dataset using functions. Write a function for steps 1 & 2.
+-   [ ] Write a function for step 3
+-   [ ] Write a function for step 5
+-   [ ] Write a function for step 6
+-   [ ] Write the "cumulative" function, including the wrapper function and the short function to combine data
+-   [ ] Write a summarizing function
+-   [ ] Put it Together
