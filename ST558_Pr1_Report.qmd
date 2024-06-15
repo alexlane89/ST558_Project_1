@@ -7,7 +7,25 @@ editor: visual
 
 ## Data Processing
 
-Where does our data come from and what does it describe?
+```{r}
+library(tidyverse)
+```
+
+
+> Start by reading in the desired data
+
+```{r}
+census_county <-
+  read.csv("https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv")
+```
+
+> Select the specific data in question, i.e. "Area Name", STCOU, and variables ending in "D". The "ends_with()" function, which is part of the {tidyselect} package can be used within the select function to identify those columns which end in "D".
+
+```{r}
+census_county |>
+  select(Area_name, STCOU, ends_with("D"))
+```
+
 
 ## Write a Generic Function for Summarizing
 
