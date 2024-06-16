@@ -8,10 +8,6 @@ editor: visual
 
 -   [x] Create R Project & github repo - **Charles**
 -   [x] Read-in the EDU01 dataset and manipulate the data as described in the project descriptions of items 1 to 6. - **Paige**
--   [ ] Repeat the process from above with the 2nd component of the dataset using functions. Write a function for steps 1 & 2. - **Charles**
--   [ ] Write a function for step 3 - **Charles**
--   [ ] Write a function for step 5
--   [ ] Write a function for step 6
--   [ ] Write the "cumulative" function, including the wrapper function and the short function to combine data
+-   [x] Write a function for step 1, 2, 3, 5, 6, & "cumulative" - **Charles**
 -   [ ] Write a summarizing function
 -   [ ] Put it Together

@@ -142,8 +142,10 @@ non_county_data
 ```
 **NOTE** - Washington D.C. includes duplicate entries in the dataset, for both "DISTRICT OF COLUMBIA" and "District of Columbia".
 
-## Write a Generic Function for Summarizing
-> Repeat the steps above, but within the context of a function to generalize the actions.
+## Generating Functions to Process Data
+
+### Building Functions
+> Repeat the steps described in the 'Data Processing' section, but within the context of a function to generalize the actions. First, we'll build building block functions to replicate the specific tasks described in the preceding section.
 
 ```{r}
 census_county_b <-
@@ -172,13 +174,11 @@ census_long_b
 
 add_yr_meas <- function(x, value = "count") {
   x |>
-    mutate(
-      year = as.numeric(paste0("19", substr(enrollment,
+    mutate(year = as.numeric(paste0("19", substr(enrollment,
                                             nchar(enrollment) - 2,
                                             nchar(enrollment) - 1))),
-      measurement = substr(enrollment, 1, nchar(enrollment) - 3)
-      )|>
-select(area_name, STCOU, year, measurement, value)
+      measurement = substr(enrollment, 1, nchar(enrollment) - 3))|>
+  select(area_name, STCOU, year, measurement, value)
 }
 
 census_final_b <- add_yr_meas(census_long_b)
@@ -257,18 +257,71 @@ assign_division <- function(x){
 
 ```
 
-> Now write a function that creates 2 data sets (county & non-county) and uses the 'add_state' and 'assign_division' functions above to return 2 tibbles.
+> Now write a function that creates 2 data sets (county & non-county) and uses the 'add_state' and 'assign_division' functions above to return 2 tibbles. 
+
+> The input to this dataset is the single data set with county & non-county data which has the variables 'year', 'measurement', and a function-defined "value".
 
 ```{r}
-sep_county_data <- function(x, value = "count") {
+sep_county_data <- function(x) {
   fcn_indices <- grep(pattern = ", \\w\\w", x$area_name)
   fcn_county_data <- x[fcn_indices, ]
-  class(fcn_data) <- c("county", class(fcn_data))
+  class(fcn_county_data) <- c("county", class(fcn_county_data))
   fcn_non_county_data <- x[-fcn_indices, ]
   class(fcn_non_county_data) <- c("state", class(fcn_non_county_data))
+  transformed_county_data <- add_state(fcn_county_data)
+  transformed_non_county_data <- assign_division(fcn_non_county_data)
+  transformed_data_list <- list(transformed_county_data,
+                                transformed_non_county_data)
+  return(transformed_data_list)
 }
+
+sep_county_data(census_final_b)
+```
+> Combining the functions developed previously, we'll create one wrapper function to perform all the steps.
+
+```{r}
+my_wrapper <- function(url, value = "count") {
+  read_csv(url) |>
+    sel_pivot(value = value) |>
+    add_yr_meas(value = value) |>
+    sep_county_data()
+}
+
+my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
 ```
 
+### Transform EDU01a & EDU01b
+> Use the preceding 'my_wrapper' function to transform/manipulate the 2 census datasets on enrollment which have been studied thus far - EDU01a & EDU01b.
+
+```{r}
+EDU01a_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv")
+EDU01b_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
+
+EDU01a_transformed_data
+```
+
+```{r}
+EDU01b_transformed_data
+```
+> Create a function that combines county data from EDU01a & EDU01b, and combines non-county data from EDU01a & EDU01b. The result will be 2 tibbles, one of combined county data, and one of combined non-county data.
+
+```{r}
+combined_enrollment <- function(urla, urlb, value = "count") {
+  data_list_a <- my_wrapper(url = urla, value = value)
+  data_list_b <- my_wrapper(url = urlb, value = value)
+  county_df <- dplyr::bind_rows(data_list_a[[1]], data_list_b[[1]])
+  state_df <- dplyr::bind_rows(data_list_a[[2]], data_list_b[[2]])
+  combined_data_list <- list(county_df, state_df)
+  return(combined_data_list)
+}
+
+census_EDU01 <- combined_enrollment(urla = "https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv",
+                    urlb = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
+
+census_EDU01
+```
+
+### General Summary Function
 
 ## Put it Together
 
