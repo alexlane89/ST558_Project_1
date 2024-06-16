@@ -11,35 +11,140 @@ editor: visual
 library(tidyverse)
 ```
 
-
 > Start by reading in the desired data
 
 ```{r}
 census_county <-
-  read.csv("https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv")
+  read_csv("https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv")
+
+head(census_county)
 ```
 
 > Select the specific data in question, i.e. "Area Name", STCOU, and variables ending in "D". The "ends_with()" function, which is part of the {tidyselect} package can be used within the select function to identify those columns which end in "D".
 
 ```{r}
-census_county |>
-  select(Area_name, STCOU, ends_with("D"))
+census_select <- census_county |> 
+  select(area_name=Area_name, STCOU, ends_with("D"))
+
+census_select
+```
+
+> Convert data to long format. 
+
+```{r}
+census_long <- census_select |>
+  pivot_longer(cols = ends_with("D"), 
+               names_to = "enrollment", 
+               values_to = "value")
+
+census_long
+```
+
+> Create new columns for year and measurement from enrollment column
+
+```{r}
+census_final <- census_long |>
+mutate(
+    year = as.numeric(paste0("19", substr(enrollment, nchar(enrollment) - 2, nchar(enrollment) - 1))),
+    measurement = substr(enrollment, 1, nchar(enrollment) - 3)
+    )|>
+select(area_name, STCOU, year, measurement, value)
+
+census_final
+```
+
+> Create two datasets, one for county level data and one for non-county level data; then create classes for each dataset
+
+```{r}
+county_indices <- grep(pattern = ", \\w\\w", census_final$area_name)
+county_data <- census_final[county_indices, ]
+class(county_data) <- c("county", class(county_data))
+
+county_data
+```
+
+```{r}
+non_county_data <- census_final[-county_indices, ]
+class(non_county_data) <- c("state", class(non_county_data))
+
+non_county_data
+```
+> In the county dataset, create a new variable for state.
+
+```{r}
+county_data <- county_data |>
+  mutate(state = substr(area_name, nchar(area_name) - 2, nchar(area_name)))
+
+county_data
+```
+
+> For non-county level data, create new column for divisions.
+
+```{r}
+divisions <- c(
+    'ALABAMA' = 'Division 6',
+    'ALASKA' = 'Division 9',
+    'ARIZONA' = 'Division 8',
+    'ARKANSAS' = 'Division 7',
+    'CALIFORNIA' = 'Division 9',
+    'COLORADO' = 'Division 8',
+    'CONNECTICUT' = 'Division 1',
+    'DELAWARE' = 'Division 5',
+    'FLORIDA' = 'Division 5',
+    'GEORGIA' = 'Division 5',
+    'HAWAII' = 'Division 9',
+    'IDAHO' = 'Division 8',
+    'ILLINOIS' = 'Division 3',
+    'INDIANA' = 'Division 3',
+    'IOWA' = 'Division 4',
+    'KANSAS' = 'Division 4',
+    'KENTUCKY' = 'Division 6',
+    'LOUISIANA' = 'Division 7',
+    'MAINE' = 'Division 1',
+    'MARYLAND' = 'Division 5',
+    'MASSACHUSETTS' = 'Division 1',
+    'MICHIGAN' = 'Division 3',
+    'MINNESOTA' = 'Division 4',
+    'MISSISSIPPI' = 'Division 6',
+    'MISSOURI' = 'Division 4',
+    'MONTANA' = 'Division 8',
+    'NEBRASKA' = 'Division 4',
+    'NEVADA' = 'Division 8',
+    'NEW HAMPSHIRE' = 'Division 1',
+    'NEW JERSEY' = 'Division 2',
+    'NEW MEXICO' = 'Division 8',
+    'NEW YORK' = 'Division 2',
+    'NORTH CAROLINA' = 'Division 5',
+    'NORTH DAKOTA' = 'Division 4',
+    'OHIO' = 'Division 3',
+    'OKLAHOMA' = 'Division 7',
+    'OREGON' = 'Division 9',
+    'PENNSYLVANIA' = 'Division 2',
+    'RHODE ISLAND' = 'Division 1',
+    'SOUTH CAROLINA' = 'Division 5',
+    'SOUTH DAKOTA' = 'Division 4',
+    'TENNESSEE' = 'Division 6',
+    'TEXAS' = 'Division 7',
+    'UTAH' = 'Division 8',
+    'VERMONT' = 'Division 1',
+    'VIRGINIA' = 'Division 5',
+    'WASHINGTON' = 'Division 9',
+    'WEST VIRGINIA' = 'Division 5',
+    'WISCONSIN' = 'Division 3',
+    'WYOMING' = 'Division 8'
+)
+
+non_county_data <- non_county_data |>
+  mutate(division = ifelse(area_name %in% names(divisions), 
+                           divisions[area_name], 'ERROR'))
+
+non_county_data
 ```
 
 
 ## Write a Generic Function for Summarizing
 
 
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
 ## Put it Together
+
+
