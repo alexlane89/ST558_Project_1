@@ -29,7 +29,7 @@ census_select <- census_county |>
 census_select
 ```
 
-> Convert data to long format. 
+> Convert data to long format.
 
 ```{r}
 census_long <- census_select |>
@@ -69,6 +69,7 @@ class(non_county_data) <- c("state", class(non_county_data))
 
 non_county_data
 ```
+
 > In the county dataset, create a new variable for state.
 
 ```{r}
@@ -140,11 +141,13 @@ non_county_data <- non_county_data |>
 
 non_county_data
 ```
+
 **NOTE** - Washington D.C. includes duplicate entries in the dataset, for both "DISTRICT OF COLUMBIA" and "District of Columbia".
 
 ## Generating Functions to Process Data
 
 ### Building Functions
+
 > Repeat the steps described in the 'Data Processing' section, but within the context of a function to generalize the actions. First, we'll build building block functions to replicate the specific tasks described in the preceding section.
 
 ```{r}
@@ -153,6 +156,7 @@ census_county_b <-
 
 head(census_county_b)
 ```
+
 > Write a function associated with pulling out area name, STCOU, and enrollment numbers, then pivoting to a long data format.
 
 ```{r}
@@ -178,12 +182,13 @@ add_yr_meas <- function(x, value = "count") {
                                             nchar(enrollment) - 2,
                                             nchar(enrollment) - 1))),
       measurement = substr(enrollment, 1, nchar(enrollment) - 3))|>
-  select(area_name, STCOU, year, measurement, value)
+  select(area_name, STCOU, year, measurement, value)# |>
+#  ifelse(year == 1900, mutate(year = 2000))
 }
-
 census_final_b <- add_yr_meas(census_long_b)
 census_final_b
 ```
+
 > Write a function which adds a state ID column for county-specific data. At this point, 2 separate data sets (county vs non-county) are not presumed.
 
 ```{r}
@@ -257,7 +262,7 @@ assign_division <- function(x){
 
 ```
 
-> Now write a function that creates 2 data sets (county & non-county) and uses the 'add_state' and 'assign_division' functions above to return 2 tibbles. 
+> Now write a function that creates 2 data sets (county & non-county) and uses the 'add_state' and 'assign_division' functions above to return 2 tibbles.
 
 > The input to this dataset is the single data set with county & non-county data which has the variables 'year', 'measurement', and a function-defined "value".
 
@@ -277,6 +282,7 @@ sep_county_data <- function(x) {
 
 sep_county_data(census_final_b)
 ```
+
 > Combining the functions developed previously, we'll create one wrapper function to perform all the steps.
 
 ```{r}
@@ -291,6 +297,7 @@ my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
 ```
 
 ### Transform EDU01a & EDU01b
+
 > Use the preceding 'my_wrapper' function to transform/manipulate the 2 census datasets on enrollment which have been studied thus far - EDU01a & EDU01b.
 
 ```{r}
@@ -303,6 +310,7 @@ EDU01a_transformed_data
 ```{r}
 EDU01b_transformed_data
 ```
+
 > Create a function that combines county data from EDU01a & EDU01b, and combines non-county data from EDU01a & EDU01b. The result will be 2 tibbles, one of combined county data, and one of combined non-county data.
 
 ```{r}
@@ -323,6 +331,17 @@ census_EDU01
 
 ### General Summary Function
 
+> Create a plotting function to show means of each enrollment count for years from the state data set.
+
+```{r}
+plot.state <- function(df, value = "count") {
+  df |>
+    group_by(division, year) |>
+    summarise(Mean = mean(count, na.rm = TRUE))
+}
+
+plot.state(census_EDU01[[2]])
+```
+
+
 ## Put it Together
-
-
