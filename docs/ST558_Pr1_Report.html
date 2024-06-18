@@ -831,19 +831,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="cf">if</span> (top) <span class="fu">desc</span>(Mean) <span class="cf">else</span> Mean) <span class="sc">|&gt;</span></span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_head</span>(<span class="at">n =</span> n)</span>
 <span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  y</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">top =</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 2
-  area_name    Mean
-  &lt;chr&gt;       &lt;dbl&gt;
-1 Tyrrell, NC  744.
-2 Hyde, NC     796.
-3 Clay, NC    1253.
-4 Graham, NC  1269.
-5 Camden, NC  1286.</code></pre>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(y, <span class="fu">aes</span>(<span class="at">x =</span> area_name, <span class="at">y =</span> Mean)) <span class="sc">+</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Group"</span>,</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean Value"</span>)</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">top =</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -856,10 +857,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Run your data processing function on the two enrollment URLs given previously, specifying an appro- priate name for the enrollment data column.</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>EDU01a_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv"</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>EDU01b_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv"</span>)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(EDU01a_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>EDU01a_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv"</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>EDU01b_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv"</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(EDU01a_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 31,450 × 6
@@ -893,7 +894,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 10 UNITED STATES 00000  1996 EDU0101     44715737 ERROR   
 # ℹ 520 more rows</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(EDU01b_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(EDU01b_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 31,450 × 6
@@ -932,9 +933,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Run your data combining function to put these into one object (with two data frames)</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>census_EDU01 <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(EDU01a_transformed_data, EDU01b_transformed_data)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(census_EDU01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>census_EDU01 <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(EDU01a_transformed_data, EDU01b_transformed_data)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(census_EDU01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 62,900 × 6
@@ -973,7 +974,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use the plot function on the state data frame</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.state</span>(census_EDU01[[<span class="dv">2</span>]], <span class="at">value =</span> <span class="st">"count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.state</span>(census_EDU01[[<span class="dv">2</span>]], <span class="at">value =</span> <span class="st">"count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -986,75 +987,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use the plot function on the county data frame</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"NC"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 20 × 2
-   area_name         Mean
-   &lt;chr&gt;            &lt;dbl&gt;
- 1 Mecklenburg, NC 94598.
- 2 Wake, NC        87053.
- 3 Guilford, NC    59615.
- 4 Cumberland, NC  49999.
- 5 Forsyth, NC     42897.
- 6 Gaston, NC      30694.
- 7 Durham, NC      30223.
- 8 Buncombe, NC    28411.
- 9 Robeson, NC     23909.
-10 Davidson, NC    23405.
-11 Catawba, NC     21907.
-12 Cabarrus, NC    21244.
-13 New Hanover, NC 21103.
-14 Union, NC       20900.
-15 Onslow, NC      20744.
-16 Randolph, NC    19697.
-17 Pitt, NC        19407.
-18 Iredell, NC     19341.
-19 Alamance, NC    19303.
-20 Johnston, NC    18926.</code></pre>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"NC"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"SC"</span>, <span class="at">top =</span> <span class="cn">FALSE</span>, <span class="at">n =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 2
-  area_name      Mean
-  &lt;chr&gt;         &lt;dbl&gt;
-1 McCormick, SC 1279.
-2 Calhoun, SC   2024.
-3 Allendale, SC 2158.
-4 Saluda, SC    2234.
-5 Jasper, SC    2929.
-6 Bamberg, SC   3055.
-7 Lee, SC       3278.</code></pre>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"SC"</span>, <span class="at">top =</span> <span class="cn">FALSE</span>, <span class="at">n =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 2
-  area_name         Mean
-  &lt;chr&gt;            &lt;dbl&gt;
-1 Mecklenburg, NC 94598.
-2 Wake, NC        87053.
-3 Guilford, NC    59615.
-4 Cumberland, NC  49999.
-5 Forsyth, NC     42897.</code></pre>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"PA"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 2
-  area_name           Mean
-  &lt;chr&gt;              &lt;dbl&gt;
-1 Philadelphia, PA 204874.
-2 Allegheny, PA    167602.
-3 Montgomery, PA    91621.
-4 Bucks, PA         85044.
-5 Delaware, PA      67154.
-6 Lancaster, PA     65147.
-7 Berks, PA         60150.
-8 Chester, PA       60029 </code></pre>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"PA"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1064,12 +1033,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Run the data processing function on the four data sets at URLs given</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>PST01a_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01a.csv"</span>)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>PST01b_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01b.csv"</span>)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>PST01c_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01c.csv"</span>)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>PST01d_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01d.csv"</span>)</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01a_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>PST01a_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01a.csv"</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>PST01b_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01b.csv"</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>PST01c_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01c.csv"</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>PST01d_transformed_data <span class="ot">&lt;-</span> <span class="fu">my_wrapper</span>(<span class="at">url =</span> <span class="st">"https://www4.stat.ncsu.edu/~online/datasets/PST01d.csv"</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01a_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 31,450 × 6
@@ -1103,7 +1072,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 10 UNITED STATES 00000  1981 PST0251     229466391 ERROR   
 # ℹ 520 more rows</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01b_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01b_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 31,450 × 6
@@ -1137,7 +1106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 10 UNITED STATES 00000  1990 PST0351     249622814 ERROR   
 # ℹ 520 more rows</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01c_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01c_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 31,450 × 6
@@ -1171,7 +1140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 10 UNITED STATES 00000  2000 PST0402     281424602 ERROR   
 # ℹ 520 more rows</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01d_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST01d_transformed_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 31,450 × 6
@@ -1210,11 +1179,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Run the data combining function (probably three times) to put these into one object (with two data frames)</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>PST_01 <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(PST01a_transformed_data, PST01b_transformed_data)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>PST_02 <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(PST01c_transformed_data, PST01d_transformed_data)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>PST_final <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(PST_01, PST_02)</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>PST_01 <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(PST01a_transformed_data, PST01b_transformed_data)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>PST_02 <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(PST01c_transformed_data, PST01d_transformed_data)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>PST_final <span class="ot">&lt;-</span> <span class="fu">combined_enrollment</span>(PST_01, PST_02)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PST_final)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 # A tibble: 125,800 × 6
@@ -1253,7 +1222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use the plot function on the state data frame</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.state</span>(PST_final[[<span class="dv">2</span>]], <span class="at">value =</span> <span class="st">"count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.state</span>(PST_final[[<span class="dv">2</span>]], <span class="at">value =</span> <span class="st">"count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1266,69 +1235,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use the plot function on the county data frame</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"CA"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 15 × 2
-   area_name              Mean
-   &lt;chr&gt;                 &lt;dbl&gt;
- 1 Los Angeles, CA    1543014.
- 2 San Diego, CA       439357.
- 3 Orange, CA          437775.
- 4 San Bernardino, CA  341826.
- 5 Riverside, CA       280021.
- 6 Santa Clara, CA     242212.
- 7 Alameda, CA         201361.
- 8 Sacramento, CA      201016.
- 9 Fresno, CA          167325.
-10 Contra Costa, CA    145231.
-11 Kern, CA            137252.
-12 Ventura, CA         127236.
-13 San Joaquin, CA     110280.
-14 Stanislaus, CA       89397.
-15 San Mateo, CA        86601.</code></pre>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"CA"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"TX"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 2
-  area_name      Mean
-  &lt;chr&gt;         &lt;dbl&gt;
-1 Harris, TX  608946.
-2 Dallas, TX  381276.
-3 Bexar, TX   251935 
-4 Tarrant, TX 244426.</code></pre>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"TX"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 2
-  area_name         Mean
-  &lt;chr&gt;            &lt;dbl&gt;
-1 Mecklenburg, NC 94598.
-2 Wake, NC        87053.
-3 Guilford, NC    59615.
-4 Cumberland, NC  49999.
-5 Forsyth, NC     42897.</code></pre>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"NY"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 2
-   area_name          Mean
-   &lt;chr&gt;             &lt;dbl&gt;
- 1 Kings, NY       976642.
- 2 Suffolk, NY     239556.
- 3 Nassau, NY      192139.
- 4 Erie, NY        140979.
- 5 Westchester, NY 128863.
- 6 Monroe, NY      117138.
- 7 Onondaga, NY     77616.
- 8 Orange, NY       59566.
- 9 Dutchess, NY     43558.
-10 Albany, NY       39988.</code></pre>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.county</span>(census_EDU01[[<span class="dv">1</span>]], <span class="at">state_selection =</span> <span class="st">"NY"</span>, <span class="at">top =</span> <span class="cn">TRUE</span>, <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST558_Pr1_Report_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 

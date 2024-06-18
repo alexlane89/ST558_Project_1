@@ -365,7 +365,11 @@ plot.county <- function(df, var_name = "count", state_selection = "NC", top = TR
     arrange(if (top) desc(Mean) else Mean) |>
     slice_head(n = n)
   
-  y
+    ggplot(y, aes(x = area_name, y = Mean)) +
+    geom_bar(stat = "identity") +
+    labs(
+       x = "Group",
+       y = "Mean Value")
 }
 
 plot.county(census_EDU01[[1]], top =FALSE)
