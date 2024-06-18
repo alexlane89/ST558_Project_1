@@ -177,13 +177,14 @@ census_long_b
 ```{r}
 
 add_yr_meas <- function(x, value = "count") {
+  yr_end <- substr(x$enrollment, nchar(x$enrollment) - 2,
+                   nchar(x$enrollment) - 1)
   x |>
-    mutate(year = as.numeric(paste0("19", substr(enrollment,
-                                            nchar(enrollment) - 2,
-                                            nchar(enrollment) - 1))),
-      measurement = substr(enrollment, 1, nchar(enrollment) - 3))|>
-  select(area_name, STCOU, year, measurement, value)# |>
-#  ifelse(year == 1900, mutate(year = 2000))
+    mutate(year = as.numeric(ifelse(yr_end <= 24,
+                                    paste0("20", yr_end),
+                                    paste0("19", yr_end))),
+    measurement = substr(enrollment, 1, nchar(enrollment) - 3)) |>
+  select(area_name, STCOU, year, measurement, value)
 }
 census_final_b <- add_yr_meas(census_long_b)
 census_final_b
@@ -331,16 +332,38 @@ census_EDU01
 
 ### General Summary Function
 
-> Create a plotting function to show means of each enrollment count for years from the state data set.
+> Create a plotting function to show means of each enrollment count for years vs Division from the 'state' class data set.
 
 ```{r}
 plot.state <- function(df, value = "count") {
-  df |>
+  y <- df |>
     group_by(division, year) |>
-    summarise(Mean = mean(count, na.rm = TRUE))
+    summarise(Mean = mean(get(value), na.rm = TRUE)) |>
+    filter(division != "ERROR")
+  
+  gg <- ggplot(y, aes(x=year, y=Mean, color = division))
+  gg + geom_line()
 }
 
-plot.state(census_EDU01[[2]])
+plot.state(census_EDU01[[2]], value = "count")
+```
+
+> Using the 'county' class data set, generate a plot of county enrollments. The county data to be plotted should be selectable by state, average county enrollment, ascending or descending values, and the number of counties to return.
+
+```{r}
+plot.county <- function(df, var_name = "count", state_selection = "NC",
+                        top = TRUE, num_entries = 5) {
+  y <- df |>
+    filter(state == paste0(" ", state_selection)) |>
+    group_by(area_name) |>
+    summarise(Mean = mean(get(var_name), na.rm = TRUE))
+  y_fil <- ifelse(top == TRUE, arrange(y, desc(Mean)), arrange(y, Mean))
+# Having difficulty returning the 'num_entries'. Keep getting all area_name entries, as opposed to just the number specified.
+    y_head <- head(y_fil, num_entries)
+  y_head
+}
+
+plot.county(census_EDU01[[1]])
 ```
 
 
