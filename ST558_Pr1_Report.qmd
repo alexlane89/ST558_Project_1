@@ -1,9 +1,13 @@
 ---
-title: "Modifying & Processing Census Data"
+title: "ST 558 - Project 1"
 author: "Charles Lane & Paige O'Connell"
 format: html
 editor: visual
 ---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(message = FALSE, warning = FALSE) 
+```
 
 ## Data Processing
 
@@ -20,15 +24,17 @@ census_county <-
 head(census_county)
 ```
 
+### Step 1
 > Select the specific data in question, i.e. "Area Name", STCOU, and variables ending in "D". The "ends_with()" function, which is part of the {tidyselect} package can be used within the select function to identify those columns which end in "D".
 
 ```{r}
 census_select <- census_county |> 
   select(area_name=Area_name, STCOU, ends_with("D"))
 
-census_select
+head(census_select)
 ```
 
+### Step 2
 > Convert data to long format.
 
 ```{r}
@@ -37,9 +43,10 @@ census_long <- census_select |>
                names_to = "enrollment", 
                values_to = "value")
 
-census_long
+head(census_long)
 ```
 
+### Step 3
 > Create new columns for year and measurement from enrollment column
 
 ```{r}
@@ -50,9 +57,10 @@ mutate(
     )|>
 select(area_name, STCOU, year, measurement, value)
 
-census_final
+head(census_final)
 ```
 
+### Step 4
 > Create two datasets, one for county level data and one for non-county level data; then create classes for each dataset
 
 ```{r}
@@ -60,25 +68,27 @@ county_indices <- grep(pattern = ", \\w\\w", census_final$area_name)
 county_data <- census_final[county_indices, ]
 class(county_data) <- c("county", class(county_data))
 
-county_data
+head(county_data)
 ```
 
 ```{r}
 non_county_data <- census_final[-county_indices, ]
 class(non_county_data) <- c("state", class(non_county_data))
 
-non_county_data
+head(non_county_data)
 ```
 
+### Step 5
 > In the county dataset, create a new variable for state.
 
 ```{r}
 county_data <- county_data |>
   mutate(state = substr(area_name, nchar(area_name) - 2, nchar(area_name)))
 
-county_data
+head(county_data)
 ```
 
+### Step 6
 > For non-county level data, create new column for divisions.
 
 ```{r}
@@ -139,14 +149,12 @@ non_county_data <- non_county_data |>
   mutate(division = ifelse(area_name %in% names(divisions), 
                            divisions[area_name], 'ERROR'))
 
-non_county_data
+head(non_county_data)
 ```
 
 **NOTE** - Washington D.C. includes duplicate entries in the dataset, for both "DISTRICT OF COLUMBIA" and "District of Columbia".
 
 ## Generating Functions to Process Data
-
-### Building Functions
 
 > Repeat the steps described in the 'Data Processing' section, but within the context of a function to generalize the actions. First, we'll build building block functions to replicate the specific tasks described in the preceding section.
 
@@ -157,6 +165,7 @@ census_county_b <-
 head(census_county_b)
 ```
 
+### Function for Steps 1 & 2
 > Write a function associated with pulling out area name, STCOU, and enrollment numbers, then pivoting to a long data format.
 
 ```{r}
@@ -169,13 +178,13 @@ sel_pivot <- function(x, value = "count") {
 }
 
 census_long_b <- sel_pivot(census_county_b)
-census_long_b
+head(census_long_b)
 ```
 
+### Function for Step 3
 > Write a further function which creates columns for 'year' and 'measurement' from the output of the 'sel_pivot' function.
 
 ```{r}
-
 add_yr_meas <- function(x, value = "count") {
   yr_end <- substr(x$enrollment, nchar(x$enrollment) - 2,
                    nchar(x$enrollment) - 1)
@@ -186,10 +195,12 @@ add_yr_meas <- function(x, value = "count") {
     measurement = substr(enrollment, 1, nchar(enrollment) - 3)) |>
   select(area_name, STCOU, year, measurement, value)
 }
+
 census_final_b <- add_yr_meas(census_long_b)
-census_final_b
+head(census_final_b)
 ```
 
+### Function for Step 5
 > Write a function which adds a state ID column for county-specific data. At this point, 2 separate data sets (county vs non-county) are not presumed.
 
 ```{r}
@@ -200,6 +211,7 @@ add_state <- function(x) {
 }
 ```
 
+### Function for Step 6
 > Write a function assigning a census-defined "division" to the states identified in the non-county dataset. At this point, 2 separate data sets (county vs non-county) are not presumed.
 
 ```{r}
@@ -263,6 +275,7 @@ assign_division <- function(x){
 
 ```
 
+### Function for Step 4
 > Now write a function that creates 2 data sets (county & non-county) and uses the 'add_state' and 'assign_division' functions above to return 2 tibbles.
 
 > The input to this dataset is the single data set with county & non-county data which has the variables 'year', 'measurement', and a function-defined "value".
@@ -284,6 +297,7 @@ sep_county_data <- function(x) {
 sep_county_data(census_final_b)
 ```
 
+### Wrapper Function
 > Combining the functions developed previously, we'll create one wrapper function to perform all the steps.
 
 ```{r}
@@ -297,41 +311,33 @@ my_wrapper <- function(url, value = "count") {
 my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
 ```
 
-### Transform EDU01a & EDU01b
-
+### Call it and Combine
 > Use the preceding 'my_wrapper' function to transform/manipulate the 2 census datasets on enrollment which have been studied thus far - EDU01a & EDU01b.
 
 ```{r}
 EDU01a_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv")
 EDU01b_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
 
-EDU01a_transformed_data
-```
-
-```{r}
-EDU01b_transformed_data
+head(EDU01a_transformed_data)
+head(EDU01b_transformed_data)
 ```
 
 > Create a function that combines county data from EDU01a & EDU01b, and combines non-county data from EDU01a & EDU01b. The result will be 2 tibbles, one of combined county data, and one of combined non-county data.
 
 ```{r}
-combined_enrollment <- function(urla, urlb, value = "count") {
-  data_list_a <- my_wrapper(url = urla, value = value)
-  data_list_b <- my_wrapper(url = urlb, value = value)
-  county_df <- dplyr::bind_rows(data_list_a[[1]], data_list_b[[1]])
-  state_df <- dplyr::bind_rows(data_list_a[[2]], data_list_b[[2]])
+combined_enrollment <- function(dataset_a, dataset_b) {
+  county_df <- dplyr::bind_rows(dataset_a[[1]], dataset_b[[1]])
+  state_df <- dplyr::bind_rows(dataset_a[[2]], dataset_b[[2]])
   combined_data_list <- list(county_df, state_df)
   return(combined_data_list)
 }
 
-census_EDU01 <- combined_enrollment(urla = "https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv",
-                    urlb = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
+census_EDU01 <- combined_enrollment(EDU01a_transformed_data, EDU01b_transformed_data)
 
-census_EDU01
+head(census_EDU01)
 ```
 
 ### General Summary Function
-
 > Create a plotting function to show means of each enrollment count for years vs Division from the 'state' class data set.
 
 ```{r}
@@ -351,20 +357,114 @@ plot.state(census_EDU01[[2]], value = "count")
 > Using the 'county' class data set, generate a plot of county enrollments. The county data to be plotted should be selectable by state, average county enrollment, ascending or descending values, and the number of counties to return.
 
 ```{r}
-plot.county <- function(df, var_name = "count", state_selection = "NC",
-                        top = TRUE, num_entries = 5) {
+plot.county <- function(df, var_name = "count", state_selection = "NC", top = TRUE, n = 5) {
   y <- df |>
     filter(state == paste0(" ", state_selection)) |>
     group_by(area_name) |>
-    summarise(Mean = mean(get(var_name), na.rm = TRUE))
-  y_fil <- ifelse(top == TRUE, arrange(y, desc(Mean)), arrange(y, Mean))
-# Having difficulty returning the 'num_entries'. Keep getting all area_name entries, as opposed to just the number specified.
-    y_head <- head(y_fil, num_entries)
-  y_head
+    summarise(Mean = mean(get(var_name), na.rm = TRUE)) |>
+    arrange(if (top) desc(Mean) else Mean) |>
+    slice_head(n = n)
+  
+  y
 }
 
-plot.county(census_EDU01[[1]])
+plot.county(census_EDU01[[1]], top =FALSE)
 ```
 
 
 ## Put it Together
+
+### Original datasets
+> Run your data processing function on the two enrollment URLs given previously, specifying an appro- priate name for the enrollment data column.
+
+```{r}
+EDU01a_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01a.csv")
+EDU01b_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/EDU01b.csv")
+
+head(EDU01a_transformed_data)
+head(EDU01b_transformed_data)
+```
+
+> Run your data combining function to put these into one object (with two data frames)
+
+```{r}
+census_EDU01 <- combined_enrollment(EDU01a_transformed_data, EDU01b_transformed_data)
+
+head(census_EDU01)
+```
+
+> Use the plot function on the state data frame
+
+```{r}
+plot.state(census_EDU01[[2]], value = "count")
+```
+
+> Use the plot function on the county data frame
+
+```{r}
+plot.county(census_EDU01[[1]], state_selection = "NC", top = TRUE, n = 20)
+```
+
+```{r}
+plot.county(census_EDU01[[1]], state_selection = "SC", top = FALSE, n = 7)
+```
+
+```{r}
+plot.county(census_EDU01[[1]])
+```
+
+```{r}
+plot.county(census_EDU01[[1]], state_selection = "PA", top = TRUE, n = 8)
+```
+
+### New Datasets
+
+> Run the data processing function on the four data sets at URLs given
+
+```{r}
+PST01a_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/PST01a.csv")
+PST01b_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/PST01b.csv")
+PST01c_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/PST01c.csv")
+PST01d_transformed_data <- my_wrapper(url = "https://www4.stat.ncsu.edu/~online/datasets/PST01d.csv")
+
+head(PST01a_transformed_data)
+head(PST01b_transformed_data)
+head(PST01c_transformed_data)
+head(PST01d_transformed_data)
+```
+
+> Run the data combining function (probably three times) to put these into one object (with two data frames)
+
+```{r}
+PST_01 <- combined_enrollment(PST01a_transformed_data, PST01b_transformed_data)
+PST_02 <- combined_enrollment(PST01c_transformed_data, PST01d_transformed_data)
+PST_final <- combined_enrollment(PST_01, PST_02)
+
+head(PST_final)
+```
+
+> Use the plot function on the state data frame
+
+```{r}
+plot.state(PST_final[[2]], value = "count")
+```
+
+> Use the plot function on the county data frame
+
+```{r}
+plot.county(census_EDU01[[1]], state_selection = "CA", top = TRUE, n = 15)
+```
+
+```{r}
+plot.county(census_EDU01[[1]], state_selection = "TX", top = TRUE, n = 4)
+```
+
+```{r}
+plot.county(census_EDU01[[1]])
+```
+
+```{r}
+plot.county(census_EDU01[[1]], state_selection = "NY", top = TRUE, n = 10)
+```
+
+
