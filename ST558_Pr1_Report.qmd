@@ -358,26 +358,30 @@ plot.state(census_EDU01[[2]], value = "count")
 
 ```{r}
 plot.county <- function(df, var_name = "count", state_selection = "NC", top = TRUE, n = 5) {
-  y <- df |>
+  y_mean <- df |>
     filter(state == paste0(" ", state_selection)) |>
     group_by(area_name) |>
     summarise(Mean = mean(get(var_name), na.rm = TRUE)) |>
     arrange(if (top) desc(Mean) else Mean) |>
     slice_head(n = n)
   
-    ggplot(y, aes(x = area_name, y = Mean)) +
-    geom_bar(stat = "identity", fill = "#9CAF88", color = "black") +
-    labs(
-      title = paste(n, "Counties in", state_selection, "by", var_name),
-      x = "County",
-      y = "Mean Value"
-    ) +
-    theme_minimal() +
-    theme(
-      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
-      plot.title = element_text(hjust = 0.5, face = "bold")
-    ) +
-    geom_text(aes(label = round(Mean, 2)), vjust = -0.5, size = 3.5)
+  y <- df |>
+    filter(state == paste0(" ", state_selection)) |>
+    filter(area_name == y_mean$area_name)
+  
+    ggplot(y, aes(x = year, y = count, color = area_name)) +
+    geom_line()#stat = "identity", fill = "#9CAF88", color = "black") +
+#    labs(
+#      title = paste(n, "Counties in", state_selection, "by", var_name),
+#      x = "County",
+#      y = "Mean Value"
+#    ) +
+#    theme_minimal() +
+#    theme(
+#      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+#      plot.title = element_text(hjust = 0.5, face = "bold")
+#    ) +
+#    geom_text(aes(label = round(Mean, 2)), vjust = -0.5, size = 3.5)
 }
 
 plot.county(census_EDU01[[1]], top =FALSE)
