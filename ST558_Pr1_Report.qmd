@@ -356,6 +356,8 @@ plot.state(census_EDU01[[2]], value = "count")
 
 > Using the 'county' class data set, generate a plot of county enrollments. The county data to be plotted should be selectable by state, average county enrollment, ascending or descending values, and the number of counties to return.
 
+**NOTE** - Based on discussions within the Wolfware discussion forum, we are assuming the desired plot is one where actual count / enrollment is plotted against year, but the counties to be selected should be those which had highest or lowest average enrollment.
+
 ```{r}
 plot.county <- function(df, var_name = "count", state_selection = "NC", top = TRUE, n = 5) {
   y_mean <- df |>
