@@ -9,5 +9,5 @@ editor: visual
 -   [x] Create R Project & github repo - **Charles**
 -   [x] Read-in the EDU01 dataset and manipulate the data as described in the project descriptions of items 1 to 6. - **Paige**
 -   [x] Write a function for step 1, 2, 3, 5, 6, & "cumulative" - **Charles**
--   [ ] Write a summarizing function
--   [ ] Put it Together
+-   [x] Write a summarizing function - **Charles**
+-   [x] Put it Together - **Paige**

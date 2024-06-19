@@ -366,10 +366,18 @@ plot.county <- function(df, var_name = "count", state_selection = "NC", top = TR
     slice_head(n = n)
   
     ggplot(y, aes(x = area_name, y = Mean)) +
-    geom_bar(stat = "identity") +
+    geom_bar(stat = "identity", fill = "#9CAF88", color = "black") +
     labs(
-       x = "Group",
-       y = "Mean Value")
+      title = paste(n, "Counties in", state_selection, "by", var_name),
+      x = "County",
+      y = "Mean Value"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+      plot.title = element_text(hjust = 0.5, face = "bold")
+    ) +
+    geom_text(aes(label = round(Mean, 2)), vjust = -0.5, size = 3.5)
 }
 
 plot.county(census_EDU01[[1]], top =FALSE)
